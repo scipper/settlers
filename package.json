@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.main.json",
-    "start": "node target/App.js"
+    "build": "tsc",
+    "start": "node target/App.js",
+    "test": "mocha"
   },
   "author": "Steffen Kowalski",
   "license": "ISC",
