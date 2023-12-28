@@ -3,7 +3,7 @@ import {assert} from "chai";
 import {BeforeEach, Test} from "../testHelpers";
 import {ResourceField} from "../../../main/ts/resourceField/ResourceField";
 import {Ignore} from "../testHelpers/Ignore";
-import {SettlementAlreadyExistHereError} from "../../../main/ts/resourceField/SettlementAlreadyExistHereError";
+import {SettlementAlreadyExistsHereError} from "../../../main/ts/resourceField/SettlementAlreadyExistsHereError";
 import {SettlementsTooCloseError} from "../../../main/ts/resourceField/SettlementsTooCloseError";
 
 
@@ -29,7 +29,7 @@ export class SettlementTest {
   should_not_add_multiple_settlements_to_the_same_position() {
     this.resourceField.addSettlementToPosition(1);
 
-    assert.throws(() => this.resourceField.addSettlementToPosition(1), SettlementAlreadyExistHereError);
+    assert.throws(() => this.resourceField.addSettlementToPosition(1), SettlementAlreadyExistsHereError);
   }
 
   @Test

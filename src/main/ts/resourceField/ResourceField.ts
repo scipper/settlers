@@ -1,14 +1,13 @@
-import {TooMuchSettlementsError} from "./TooMuchSettlementsError";
-import {TooMuchStreetsError} from "./TooMuchStreetsError";
 import {NumberChip} from "./numberChip/NumberChip";
 import {NoSettlementToUpdateError} from "./NoSettlementToUpdateError";
-import {SettlementAlreadyExistHereError} from "./SettlementAlreadyExistHereError";
+import {SettlementAlreadyExistsHereError} from "./SettlementAlreadyExistsHereError";
 import {SettlementsTooCloseError} from "./SettlementsTooCloseError";
+import {StreetAlreadyExistsHereError} from "./StreetAlreadyExistsHereError";
 
 export class ResourceField {
 
   private readonly settlements: { [key: number]: number };
-  private readonly streets: number[];
+  private readonly streets: { [key: number]: number };
   private readonly cities: number[];
   private numberChip?: NumberChip;
 
@@ -20,33 +19,28 @@ export class ResourceField {
 
   addSettlementToPosition(number: number) {
     if(typeof this.settlements[number] !== "undefined") {
-      throw new SettlementAlreadyExistHereError();
+      throw new SettlementAlreadyExistsHereError();
     }
     if(typeof this.settlements[number - 1] !== "undefined" ||
       typeof this.settlements[number + 1] !== "undefined") {
       throw new SettlementsTooCloseError();
     }
-    if(Object.values(this.settlements).length < 3) {
-      this.settlements[number] = 0;
-    } else {
-      throw new TooMuchSettlementsError();
-    }
+    this.settlements[number] = 0;
   }
 
   getSettlements(): number[] {
     return Object.values(this.settlements);
   }
 
-  addStreet() {
-    if(this.streets.length < 6) {
-      this.streets.push(0);
-    } else {
-      throw new TooMuchStreetsError();
+  addStreetToPosition(number: number) {
+    if(typeof this.streets[number] !== "undefined") {
+      throw new StreetAlreadyExistsHereError();
     }
+    this.streets[number] = 0;
   }
 
   getStreets() {
-    return this.streets;
+    return Object.values(this.streets);
   }
 
   setNumberChip(numberChip: NumberChip) {
