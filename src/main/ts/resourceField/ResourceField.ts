@@ -2,30 +2,39 @@ import {TooMuchSettlementsError} from "./TooMuchSettlementsError";
 import {TooMuchStreetsError} from "./TooMuchStreetsError";
 import {NumberChip} from "./numberChip/NumberChip";
 import {NoSettlementToUpdateError} from "./NoSettlementToUpdateError";
+import {SettlementAlreadyExistHereError} from "./SettlementAlreadyExistHereError";
+import {SettlementsTooCloseError} from "./SettlementsTooCloseError";
 
 export class ResourceField {
 
-  private readonly settlements: number[];
+  private readonly settlements: { [key: number]: number };
   private readonly streets: number[];
   private readonly cities: number[];
   private numberChip?: NumberChip;
 
   constructor() {
-    this.settlements = [];
+    this.settlements = {};
     this.streets = [];
     this.cities = [];
   }
 
-  addSettlement() {
-    if(this.settlements.length < 3) {
-      this.settlements.push(0);
+  addSettlementToPosition(number: number) {
+    if(typeof this.settlements[number] !== "undefined") {
+      throw new SettlementAlreadyExistHereError();
+    }
+    if(typeof this.settlements[number - 1] !== "undefined" ||
+      typeof this.settlements[number + 1] !== "undefined") {
+      throw new SettlementsTooCloseError();
+    }
+    if(Object.values(this.settlements).length < 3) {
+      this.settlements[number] = 0;
     } else {
       throw new TooMuchSettlementsError();
     }
   }
 
   getSettlements(): number[] {
-    return this.settlements;
+    return Object.values(this.settlements);
   }
 
   addStreet() {
@@ -46,17 +55,17 @@ export class ResourceField {
 
   getResourcesForRoll(roll: number) {
     if(this.numberChip?.getValue() === roll) {
-      return this.settlements.length + (this.cities.length * 2);
+      return Object.values(this.settlements).length + (this.cities.length * 2);
     } else {
       return 0;
     }
   }
 
   upgradeSettlementToCity() {
-    if(this.settlements.length === 0) {
+    if(Object.values(this.settlements).length === 0) {
       throw new NoSettlementToUpdateError();
     }
-    this.settlements.splice(0, 1);
+    delete this.settlements[1];
     this.cities.push(0);
   }
 

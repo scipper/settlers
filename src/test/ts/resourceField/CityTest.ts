@@ -18,7 +18,7 @@ export class CityTest {
 
   @Test
   should_upgrade_1_settlement_to_a_city() {
-    this.resourceField.addSettlement();
+    this.resourceField.addSettlementToPosition(1);
     this.resourceField.upgradeSettlementToCity();
 
     assert.equal(this.resourceField.getSettlements().length, 0);

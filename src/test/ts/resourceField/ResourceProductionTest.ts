@@ -28,7 +28,7 @@ export class ResourceProductionTest {
   @Test
   should_produce_resource_when_number_chip_value_gets_rolled() {
     this.resourceField.setNumberChip(new NumberChip(2));
-    this.resourceField.addSettlement();
+    this.resourceField.addSettlementToPosition(1);
 
     const resource = this.resourceField.getResourcesForRoll(2);
 
@@ -38,9 +38,9 @@ export class ResourceProductionTest {
   @Test
   should_produce_resource_for_every_settlement() {
     this.resourceField.setNumberChip(new NumberChip(2));
-    this.resourceField.addSettlement();
-    this.resourceField.addSettlement();
-    this.resourceField.addSettlement();
+    this.resourceField.addSettlementToPosition(1);
+    this.resourceField.addSettlementToPosition(3);
+    this.resourceField.addSettlementToPosition(5);
 
     const resource = this.resourceField.getResourcesForRoll(2);
 
@@ -50,7 +50,7 @@ export class ResourceProductionTest {
   @Test
   should_produce_2_resources_for_city() {
     this.resourceField.setNumberChip(new NumberChip(2));
-    this.resourceField.addSettlement();
+    this.resourceField.addSettlementToPosition(1);
     this.resourceField.upgradeSettlementToCity();
 
     const resource = this.resourceField.getResourcesForRoll(2);
@@ -61,7 +61,7 @@ export class ResourceProductionTest {
   @Test
   should_not_produce_resource_when_wrong_number_gets_rolled() {
     this.resourceField.setNumberChip(new NumberChip(2));
-    this.resourceField.addSettlement();
+    this.resourceField.addSettlementToPosition(1);
 
     const resource = this.resourceField.getResourcesForRoll(3);
 
