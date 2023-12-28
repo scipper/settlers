@@ -1,6 +1,6 @@
 import {TooMuchSettlementsError} from "./TooMuchSettlementsError";
 import {TooMuchStreetsError} from "./TooMuchStreetsError";
-import {NumberChip} from "./NumberChip";
+import {NumberChip} from "./numberChip/NumberChip";
 import {NoSettlementToUpdateError} from "./NoSettlementToUpdateError";
 
 export class ResourceField {

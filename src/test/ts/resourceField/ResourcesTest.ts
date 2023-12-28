@@ -1,5 +1,5 @@
-import {Suite} from "./testHelpers/Suite";
-import {Test} from "./testHelpers";
+import {Suite} from "../testHelpers/Suite";
+import {Test} from "../testHelpers";
 
 @Suite
 export class ResourcesTest {
