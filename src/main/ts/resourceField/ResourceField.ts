@@ -3,6 +3,7 @@ import {NoSettlementToUpdateError} from "./NoSettlementToUpdateError";
 import {SettlementAlreadyExistsHereError} from "./SettlementAlreadyExistsHereError";
 import {SettlementsTooCloseError} from "./SettlementsTooCloseError";
 import {StreetAlreadyExistsHereError} from "./StreetAlreadyExistsHereError";
+import {StreetCantBePlacedHereError} from "./StreetCantBePlacedHereError";
 
 export class ResourceField {
 
@@ -17,26 +18,37 @@ export class ResourceField {
     this.cities = [];
   }
 
-  addSettlementToPosition(number: number) {
-    if(typeof this.settlements[number] !== "undefined") {
+  addSettlementToPosition(position: number) {
+    if(typeof this.settlements[position] !== "undefined") {
       throw new SettlementAlreadyExistsHereError();
     }
-    if(typeof this.settlements[number - 1] !== "undefined" ||
-      typeof this.settlements[number + 1] !== "undefined") {
+    if(typeof this.settlements[position - 1] !== "undefined" ||
+      typeof this.settlements[position + 1] !== "undefined") {
       throw new SettlementsTooCloseError();
     }
-    this.settlements[number] = 0;
+    this.settlements[position] = 0;
   }
 
   getSettlements(): number[] {
     return Object.values(this.settlements);
   }
 
-  addStreetToPosition(number: number) {
-    if(typeof this.streets[number] !== "undefined") {
+  addStreetToPosition(position: number) {
+    if(typeof this.streets[position] !== "undefined") {
       throw new StreetAlreadyExistsHereError();
     }
-    this.streets[number] = 0;
+
+    if(typeof this.settlements[position] !== "undefined") {
+      this.streets[position] = 0;
+    } else if(typeof this.settlements[this.previousPosition(position)] !== "undefined") {
+      this.streets[position] = 0;
+    } else if(typeof this.streets[this.previousPosition(position)] !== "undefined") {
+      this.streets[position] = 0;
+    } else if(typeof this.streets[this.nextPosition(position)] !== "undefined") {
+      this.streets[position] = 0;
+    } else {
+      throw new StreetCantBePlacedHereError();
+    }
   }
 
   getStreets() {
@@ -55,15 +67,33 @@ export class ResourceField {
     }
   }
 
-  upgradeSettlementToCity() {
-    if(Object.values(this.settlements).length === 0) {
+  upgradeSettlementAtPositionToCity(position: number) {
+    if(typeof this.settlements[position] === "undefined") {
       throw new NoSettlementToUpdateError();
     }
-    delete this.settlements[1];
+    delete this.settlements[position];
     this.cities.push(0);
   }
 
   getCities() {
     return this.cities;
+  }
+
+  private previousPosition(position: number) {
+    let previousPosition = position - 1;
+    if(previousPosition < 1) {
+      previousPosition = 6;
+    }
+
+    return previousPosition;
+  }
+
+  private nextPosition(position: number) {
+    let previousPosition = position + 1;
+    if(previousPosition > 6) {
+      previousPosition = 1;
+    }
+
+    return previousPosition;
   }
 }

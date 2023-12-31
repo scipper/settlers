@@ -51,7 +51,7 @@ export class ResourceProductionTest {
   should_produce_2_resources_for_city() {
     this.resourceField.setNumberChip(new NumberChip(2));
     this.resourceField.addSettlementToPosition(1);
-    this.resourceField.upgradeSettlementToCity();
+    this.resourceField.upgradeSettlementAtPositionToCity(1);
 
     const resource = this.resourceField.getResourcesForRoll(2);
 

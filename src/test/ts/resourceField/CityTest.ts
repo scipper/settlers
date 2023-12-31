@@ -17,17 +17,17 @@ export class CityTest {
   }
 
   @Test
-  should_upgrade_1_settlement_to_a_city() {
+  should_upgrade_1_settlement_at_position_to_a_city() {
     this.resourceField.addSettlementToPosition(1);
-    this.resourceField.upgradeSettlementToCity();
+    this.resourceField.upgradeSettlementAtPositionToCity(1);
 
     assert.equal(this.resourceField.getSettlements().length, 0);
     assert.equal(this.resourceField.getCities().length, 1);
   }
 
   @Test
-  should_not_upgrade_to_a_city_when_no_settlement_is_available() {
-    assert.throws(() => this.resourceField.upgradeSettlementToCity(), NoSettlementToUpdateError);
+  should_not_upgrade_to_a_city_when_no_settlement_at_position_is_available() {
+    assert.throws(() => this.resourceField.upgradeSettlementAtPositionToCity(1), NoSettlementToUpdateError);
   }
 
 }
