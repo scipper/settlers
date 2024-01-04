@@ -1,5 +1,5 @@
-import {ValueTooLowError} from "./ValueTooLowError";
-import {ValueTooHighError} from "./ValueTooHighError";
+import {ValueTooLowError} from "../ValueTooLowError";
+import {ValueTooHighError} from "../ValueTooHighError";
 
 export class NumberChip {
 

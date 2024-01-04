@@ -1,8 +1,8 @@
 import {Suite} from "../../testHelpers/Suite";
 import {Test} from "../../testHelpers";
 import {assert} from "chai";
-import {ValueTooLowError} from "../../../../main/ts/resourceField/numberChip/ValueTooLowError";
-import {ValueTooHighError} from "../../../../main/ts/resourceField/numberChip/ValueTooHighError";
+import {ValueTooLowError} from "../../../../main/ts/resourceField/ValueTooLowError";
+import {ValueTooHighError} from "../../../../main/ts/resourceField/ValueTooHighError";
 import {NumberChip} from "../../../../main/ts/resourceField/numberChip/NumberChip";
 
 @Suite

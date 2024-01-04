@@ -4,6 +4,8 @@ import {SettlementAlreadyExistsHereError} from "./SettlementAlreadyExistsHereErr
 import {SettlementsTooCloseError} from "./SettlementsTooCloseError";
 import {StreetAlreadyExistsHereError} from "./StreetAlreadyExistsHereError";
 import {StreetCantBePlacedHereError} from "./StreetCantBePlacedHereError";
+import {ValueTooLowError} from "./ValueTooLowError";
+import {ValueTooHighError} from "./ValueTooHighError";
 
 export class ResourceField {
 
@@ -36,6 +38,13 @@ export class ResourceField {
   addStreetToPosition(position: number) {
     if(typeof this.streets[position] !== "undefined") {
       throw new StreetAlreadyExistsHereError();
+    }
+
+    if(position < 1) {
+      throw new ValueTooLowError();
+    }
+    if(position > 6) {
+      throw new ValueTooHighError();
     }
 
     if(typeof this.settlements[position] !== "undefined") {

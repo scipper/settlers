@@ -3,8 +3,9 @@ import {assert} from "chai";
 import {BeforeEach, Test} from "../testHelpers";
 import {ResourceField} from "../../../main/ts/resourceField/ResourceField";
 import {StreetAlreadyExistsHereError} from "../../../main/ts/resourceField/StreetAlreadyExistsHereError";
-import {Ignore} from "../testHelpers/Ignore";
 import {StreetCantBePlacedHereError} from "../../../main/ts/resourceField/StreetCantBePlacedHereError";
+import {ValueTooLowError} from "../../../main/ts/resourceField/ValueTooLowError";
+import {ValueTooHighError} from "../../../main/ts/resourceField/ValueTooHighError";
 
 
 @Suite
@@ -40,7 +41,28 @@ export class StreetTest {
   }
 
   @Test
-  should_not_place_a_street_when_no_street_and_not_settlement_is_near() {
+  should_have_lowest_position_of_1() {
+    this.resourceField.addSettlementToPosition(1);
+
+    assert.throws(() => this.resourceField.addStreetToPosition(0), ValueTooLowError);
+  }
+
+  @Test
+  should_have_highest_position_of_6() {
+    this.resourceField.addSettlementToPosition(1);
+
+    assert.throws(() => this.resourceField.addStreetToPosition(7), ValueTooHighError);
+  }
+
+  @Test
+  should_not_place_a_street_when_no_street_is_near() {
+    this.resourceField.addSettlementToPosition(1);
+    this.resourceField.addStreetToPosition(1);
+    assert.throws(() => this.resourceField.addStreetToPosition(3), StreetCantBePlacedHereError);
+  }
+
+  @Test
+  should_not_place_a_street_when_no_settlement_is_near() {
     assert.throws(() => this.resourceField.addStreetToPosition(1), StreetCantBePlacedHereError);
   }
 
@@ -76,12 +98,6 @@ export class StreetTest {
     this.resourceField.addStreetToPosition(6);
 
     assert.equal(this.resourceField.getStreets().length, 2);
-  }
-
-  @Ignore
-  @Test
-  should_not_place_a_street_on_an_empty_resource_field() {
-    assert.fail();
   }
 
 }
